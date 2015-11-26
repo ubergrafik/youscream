@@ -1,0 +1,16 @@
+<head>
+  <title>youscream</title>
+</head>
+<body>
+    <h1>youscream</h1>
+    {{> leaderboard}}
+</body>
+
+<template name="leaderboard">
+    <ul>
+     {{#each flavour}}
+       <li class="flavour {{selectedClass}}">{{name}}: {{votes}}</li>
+     {{/each}}
+    </ul>
+    {{ otherHelperFunction}}
+</template>
