@@ -3,17 +3,24 @@ console.log("Hello World");
 FlavoursList = new Mongo.Collection('flavours');
 
 if(Meteor.isClient){
-Template.leaderboard.helpers({
+  
+Session.set('message', "Choose a flavour!");
+
+  Template.leaderboard.helpers({
   'flavour': function(){
-        return FlavoursList.find();
+        return FlavoursList.find({}, {sort: {votes: -1} });
   },
-      'selectedClass': function(){
+  'selectedClass': function(){
     var flavourId = this._id
     var selectedFlavour = Session.get('selectedFlavour');
     if(flavourId == selectedFlavour){
       return "selected";
     }
-  }
+  },
+      'message': function(){
+          return Session.get('message');
+      }
+
 });
 
 Template.leaderboard.events({
@@ -21,11 +28,12 @@ Template.leaderboard.events({
     var flavourId = this._id;
     Session.set('selectedFlavour', flavourId);
     var selectedFlavour = Session.get('selectedFlavour');
-    console.log(selectedFlavour);
+    FlavoursList.update(selectedFlavour, {$inc: {votes: 1} });
+    Session.set('message', "You chose: "+FlavoursList.findOne(selectedFlavour, {fields: {name: 1}}).name)
   }
 });
-
 }
+
 
 if(Meteor.isServer){
 
