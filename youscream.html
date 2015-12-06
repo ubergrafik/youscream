@@ -9,8 +9,12 @@
 <template name="leaderboard">
     <ul>
      {{#each flavour}}
-       <li class="flavour {{selectedClass}}">{{name}}: {{votes}}</li>
+       <li class="{{#if currentUser}}flavour {{selectedClass}}{{/if}}">{{name}}: {{votes}}</li>
      {{/each}}
     </ul>
     {{message}}
+    <br>
+    {{ >loginButtons}}
+    <br>
+    <p class="weather">Weather: {{curweather}}</p>
 </template>
